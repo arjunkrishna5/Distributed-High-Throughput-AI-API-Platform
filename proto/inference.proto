@@ -1,0 +1,23 @@
+// gRPC interface contract defining binary communication between Java Gateway and Python AI Engine.
+// Specifies the request payload, prediction output, and service RPC methods.
+
+syntax = "proto3";
+
+package ai.platform;
+
+option java_multiple_files = true;
+option java_package = "com.platform.ai.grpc";
+option java_outer_classname = "InferenceProto";
+
+service InferenceService {
+  rpc Predict (InferenceRequest) returns (InferenceResponse);
+}
+
+message InferenceRequest {
+  string text = 1;
+}
+
+message InferenceResponse {
+  string label = 1;
+  float confidence_score = 2;
+}
