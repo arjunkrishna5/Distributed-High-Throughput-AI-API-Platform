@@ -1,0 +1,15 @@
+# Ignores local Python virtual environments and temporary byte cache files.
+# Prevents committing large machine-specific binary files to Git repository.
+
+ai_engine/venv/
+venv/
+__pycache__/
+*.pyc
+.DS_Store
+
+# Java Maven Build Artifacts & Target Directories
+**/target/
+*.class
+*.jar
+*.war
+.mvn/wrapper/maven-wrapper.jar
