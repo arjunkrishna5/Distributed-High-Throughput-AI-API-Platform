@@ -1,5 +1,5 @@
 // Service component that manages token bucket rate limiting using Bucket4j.
-// Restricts incoming user requests to 10 requests per minute to prevent system abuse.
+// Configures a production-grade bucket with 100 capacity and 20 tokens refill per second.
 
 package com.platform.ai.gateway.service;
 
@@ -18,7 +18,7 @@ public class RateLimitingService {
     private final Map<String, Bucket> cache = new ConcurrentHashMap<>();
 
     private Bucket createNewBucket() {
-        Bandwidth limit = Bandwidth.classic(10, Refill.intervally(10, Duration.ofMinutes(1)));
+        Bandwidth limit = Bandwidth.classic(100, Refill.greedy(20, Duration.ofSeconds(1)));
         return Bucket.builder()
                 .addLimit(limit)
                 .build();
