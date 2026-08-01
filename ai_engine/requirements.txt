@@ -1,6 +1,8 @@
-# Python dependencies for gRPC server and Protocol Buffer compilation.
-# Includes grpcio core runtime and grpcio-tools code generator.
+# Python dependencies for gRPC server, Protocol Buffers, and PyTorch AI Transformers.
+# Includes PyTorch CPU engine, Hugging Face transformers, and gRPC runtime.
 
 grpcio>=1.60.0
 grpcio-tools>=1.60.0
 protobuf>=4.25.1
+torch>=2.0.0
+transformers>=4.36.0
