@@ -1,5 +1,5 @@
-# Spring Boot application configuration file specifying web server port and settings.
-# Configures Gateway to run on HTTP port 8080 with Swagger UI enabled.
+# Spring Boot configuration for Java 21 Virtual Threads and web gateway.
+# Enables Project Loom virtual threads to handle high concurrency request routing.
 
 server:
   port: 8080
@@ -7,6 +7,9 @@ server:
 spring:
   application:
     name: gateway-service
+  threads:
+    virtual:
+      enabled: true
 
 springdoc:
   api-docs:
