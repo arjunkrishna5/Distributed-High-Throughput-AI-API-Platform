@@ -75,8 +75,8 @@ graph TD
 | **IPC Protocol** | **gRPC & Protocol Buffers v3** | HTTP/2 persistent binary RPC streaming pipeline on port 50051. |
 | **Rate Limiter** | **Bucket4j** | Token Bucket anti-DoS protection shield. |
 | **Cache Layer** | **Native Concurrent HashMap / Redis** | Microsecond-speed in-memory prediction caching. |
-
 | **Benchmarking** | **Locust 2.46+** | Automated 3-Stage StepLoadShape load generator. |
+
 
 ---
 
