@@ -1,33 +1,42 @@
 # Distributed High-Throughput AI API Platform
 
-A production-grade, polyglot microservice platform designed for low-latency, high-concurrency Deep Learning inference serving. Decouples high-volume public web traffic management from CPU/GPU-intensive PyTorch neural network computations using **Java 21 Virtual Threads**, **HTTP/2 gRPC Binary Protocol Buffers**, **Bucket4j Anti-DoS Rate Limiting**, and **High-Speed In-Memory Prediction Caching**.
+A complete, production-grade backend microservice platform engineered for low-latency, high-concurrency Deep Learning inference serving. Decouples high-volume public web traffic management from CPU/GPU-intensive PyTorch neural network computations using **Java 21 Virtual Threads**, **HTTP/2 gRPC Binary Protocol Buffers**, **Bucket4j Anti-DoS Rate Limiting**, and **High-Speed In-Memory Prediction Caching**.
 
 ---
 
-## 🔴 The Problem Statement
+## What is a Polyglot Architecture?
 
-Exposing Python AI/ML model servers directly to public HTTP traffic causes severe backend vulnerabilities under high concurrency:
-1. **CPU/GPU Compute Bottlenecks**: Deep learning tensor math (e.g. 66-million parameter Transformer models) takes ~20ms of CPU time per request.
-2. **Global Interpreter Lock (GIL) & Thread Starvation**: Python web servers (Flask/FastAPI) stall or run out of worker threads when thousands of concurrent HTTP requests hit the server simultaneously.
-3. **Out-of-Memory (OOM) Crashes**: Unthrottled traffic spikes cause un-queued tensor allocations to overflow RAM/VRAM, crashing the AI model process for all users.
+In backend engineering, a **Polyglot Architecture** means combining multiple programming languages within a single microservice system to leverage the unique strengths of each language:
+* **Java**: Unmatched multithreaded web traffic orchestration, memory efficiency, and concurrency scaling.
+* **Python**: The industry-standard ecosystem for Machine Learning, PyTorch, and Deep Learning models.
+
+By connecting Java and Python over high-speed binary IPC, we get the best of both worlds!
 
 ---
 
-## 🟢 The Polyglot Architectural Solution
+## Problem Statement
+
+Exposing Python Machine Learning web servers directly to high-volume public HTTP traffic creates severe architectural vulnerabilities:
+
+1. **CPU/GPU Computation Bottlenecks**: Deep Learning inference (such as evaluating 66-million parameter Transformer neural networks) requires expensive tensor matrix math taking ~20ms of dedicated CPU time per request.
+2. **Global Interpreter Lock (GIL) & Thread Starvation**: Python web frameworks (such as FastAPI or Flask) stall or run out of worker threads when thousands of concurrent HTTP requests hit the server at the exact same millisecond.
+3. **Out-of-Memory (OOM) Server Crashes**: Unthrottled traffic spikes cause un-queued tensor allocations to overflow RAM/VRAM memory, crashing the entire AI process for all active users on the system.
+
+---
+
+## Proposed Decoupled Microservice Solution
 
 This platform decouples public edge traffic orchestration from private AI model execution:
 
-* **Java 21 Edge Gateway (`gateway-service`)**: Built on Spring Boot 3.2+ with **Project Loom Virtual Threads**. Handles edge HTTP request routing, rate limiting, and in-memory prediction caching without blocking OS threads.
-* **Python PyTorch AI Engine (`ai_engine`)**: Runs isolated in a dedicated process, executing Hugging Face DistilBERT Transformer model inference over high-speed gRPC.
-* **gRPC / Protocol Buffers IPC**: Replaces heavy JSON over HTTP/1.1 with lightweight, strongly typed binary serialization over HTTP/2 persistent TCP sockets on port `50051`.
+* **Java 21 Resilient Edge Gatekeeper (`gateway-service`)**: Serves as the protective front door for all incoming public web traffic. Built on Spring Boot 3.2+ with **Project Loom Virtual Threads**, Java handles non-blocking request routing, rate limiting, and in-memory prediction caching without exhausting operating system threads.
+* **Python PyTorch AI Engine (`ai_engine`)**: Runs completely isolated in a dedicated process environment, executing Hugging Face DistilBERT Transformer model inference over high-speed gRPC.
+* **gRPC / Protocol Buffers Binary IPC**: Replaces heavy, text-based JSON over HTTP/1.1 with lightweight, strongly typed binary serialization over HTTP/2 persistent TCP sockets on port `50051`.
 * **Bucket4j Token Bucket Shield**: Intercepts abusive traffic spikes at the front door, returning `HTTP 429` in 6ms flat before excess requests ever touch Python.
-* **Native In-Memory Caching**: Caches repeated query predictions, serving cache hits in **0.8 milliseconds** and boosting throughput to **650+ Requests/Sec**.
+* **Native In-Memory Caching**: Caches repeated query predictions in memory, serving repeated queries in **0.8 milliseconds** and boosting platform throughput to **650+ Requests/Sec**.
 
 ---
 
-## 🏗️ System Architecture & Sequence Diagrams
-
-### 1. Overall System Component Diagram
+## System Architecture Diagram
 
 ```mermaid
 graph TD
@@ -55,40 +64,7 @@ graph TD
 
 ---
 
-### 2. End-to-End Request Sequence Flow
-
-```mermaid
-sequenceDiagram
-    autonumber
-    actor User as Client / Browser
-    participant GW as Java 21 Gateway (Port 8080)
-    participant RL as Bucket4j Rate Limiter
-    participant Cache as In-Memory Cache
-    participant gRPC as gRPC Client Stub
-    participant Py as Python AI Engine (Port 50051)
-
-    User->>GW: POST /api/v1/predict {"text": "Great product!"}
-    GW->>RL: Check Token Bucket (IP)
-    alt Rate Limit Exceeded
-        RL-->>User: Return HTTP 429 Too Many Requests (6ms)
-    else Token Available
-        GW->>Cache: Lookup "prediction:Great product!"
-        alt Cache Hit (0.8ms)
-            Cache-->>User: Return Cached JSON {"label": "POSITIVE", "cache_hit": true}
-        else Cache Miss
-            GW->>gRPC: Send InferenceRequest (Protobuf)
-            gRPC->>Py: gRPC Predict() over HTTP/2 (Port 50051)
-            Py->>Py: Evaluate DistilBERT Neural Network (20ms)
-            Py-->>gRPC: Return InferenceResponse (label, confidence)
-            gRPC->>Cache: Store Result in Memory Cache
-            gRPC-->>User: Return HTTP 200 OK {"label": "POSITIVE", "cache_hit": false}
-        end
-    end
-```
-
----
-
-## 🛠️ Technology Stack Matrix
+## Technology Stack Matrix
 
 | Layer / Component | Technology | Role & Key Features |
 | :--- | :--- | :--- |
@@ -103,9 +79,9 @@ sequenceDiagram
 
 ---
 
-## 📊 Empirical Performance Benchmarks
+## Empirical Performance Benchmarks
 
-Measured on a single local development machine using an **Automated 3-Stage Locust Load Benchmark** (22,819 total requests over 90 seconds):
+Measured on a local development machine using an **Automated 3-Stage Locust Load Benchmark** (22,819 total requests over 90 seconds):
 
 | Metric | Score / Measurement | Status / SLA Verdict |
 | :--- | :--- | :--- |
@@ -119,7 +95,7 @@ Measured on a single local development machine using an **Automated 3-Stage Locu
 
 ---
 
-## 🚀 Quick-Start Guide (Step-by-Step)
+## Quick-Start Execution Guide
 
 ### Prerequisites
 * **Java 21 JDK** or newer
@@ -211,7 +187,7 @@ Open Chrome at: 👉 **`http://localhost:8089`**
 
 ---
 
-## 📁 Repository Directory Structure
+## Repository Directory Structure
 
 ```text
 Distributed-High-Throughput-AI-API-Platform/
@@ -239,6 +215,6 @@ Distributed-High-Throughput-AI-API-Platform/
 
 ---
 
-## 🛡️ License
+## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
