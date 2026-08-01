@@ -1,10 +1,12 @@
-# Ignores local Python virtual environments and temporary byte cache files.
-# Prevents committing large machine-specific binary files to Git repository.
+# Ignores local Python virtual environments, temporary byte cache files, and IDE settings.
+# Prevents committing large machine-specific binary files or personal environment settings to Git.
 
+# Python virtual environments & bytecode cache
 ai_engine/venv/
 venv/
 __pycache__/
 *.pyc
+*.pyo
 .DS_Store
 
 # Java Maven Build Artifacts & Target Directories
@@ -13,3 +15,15 @@ __pycache__/
 *.jar
 *.war
 .mvn/wrapper/maven-wrapper.jar
+
+# IDE & Editor specific settings
+.vscode/
+.idea/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Locust benchmark logs & temporary test reports
+.locust*
+locust.log
