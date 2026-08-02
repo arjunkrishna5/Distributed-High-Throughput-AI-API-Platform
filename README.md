@@ -84,15 +84,16 @@ graph TD
 
 Measured on a local development machine using an **Automated 3-Stage Locust Load Benchmark** (22,819 total requests over 90 seconds):
 
-| Metric | Score / Measurement | Status / SLA Verdict |
+| Metric | Measurement | Technical SLA / Operational Target |
 | :--- | :--- | :--- |
-| **Peak Throughput (RPS)** | **652.1 Requests / Second** | 🚀 **4X Throughput Capacity** |
-| **Median (p50) Latency** | **5.0 ms** | ⚡ **Instant Response** |
-| **p95 SLA Latency** | **16.0 ms** | 🏆 **Gold Standard (< 50ms SLA)** |
-| **p99 Tail Latency** | **25.0 ms** | 💎 **Exceptional Worst-Case Bounds** |
-| **Average Latency** | **23.45 ms** | ⚡ **Blazing Fast under 200 Users** |
-| **Unhandled Exceptions** | **0 (ZERO Crashes)** | 🛡️ **100% System Reliability** |
-| **Anti-DoS Protection** | **100% Interception** | 🛡️ **HTTP 429 Blocked in 6ms** |
+| **Peak Throughput** | **652.1 Requests / Sec** | Sustained high-concurrency peak under 200 concurrent users |
+| **Median Latency (p50)** | **5.0 ms** | Baseline in-memory & un-cached median response time |
+| **p95 Latency** | **16.0 ms** | Meets production SLA target (< 50 ms) |
+| **p99 Latency** | **25.0 ms** | Upper tail latency boundary under peak concurrency |
+| **Average Latency** | **23.45 ms** | Mean response time across 22,819 requests |
+| **Unhandled Exceptions** | **0 (Zero Crashes)** | 100% system stability (Zero runtime exceptions) |
+| **Anti-DoS Protection** | **100% Interception** | `HTTP 429` rate-limit interception within 6 ms |
+
 
 ---
 
