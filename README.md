@@ -87,15 +87,19 @@ graph TD
 
 Measured on a development machine using an **Automated 3-Stage Locust Load Benchmark** (22,819 total requests over 90 seconds):
 
-| Metric | Measurement | Technical SLA / Operational Target |
-| :--- | :--- | :--- |
-| **Peak Throughput** | **652.1 Requests / Sec** | Sustained high-concurrency peak under 200 concurrent users |
-| **Median Latency (p50)** | **5.0 ms** | Baseline in-memory & un-cached median response time |
-| **p95 Latency** | **16.0 ms** | Meets production SLA target (< 50 ms) |
-| **p99 Latency** | **25.0 ms** | Upper tail latency boundary under peak concurrency |
-| **Average Latency** | **23.45 ms** | Mean response time across 22,819 requests |
-| **Unhandled Exceptions** | **0 (Zero Crashes)** | 100% system stability (Zero runtime exceptions) |
-| **Anti-DoS Protection** | **100% Interception** | `HTTP 429` rate-limit interception within 6 ms |
+| Metric | Measurement (Native Mode) | Measurement (Docker WSL2 Mode) | Technical SLA / Operational Target |
+| :--- | :--- | :--- | :--- |
+| **Peak Throughput** | **652.1 Requests / Sec** | **534.1 Requests / Sec** | Sustained high-concurrency peak under 200 concurrent users |
+| **Median Latency (p50)** | **5.0 ms** | **47.0 ms** | Baseline in-memory & un-cached median response time |
+| **p95 Latency** | **16.0 ms** | **130.0 ms** | Meets production SLA target (< 50 ms in Native mode) |
+| **p99 Latency** | **25.0 ms** | **190.0 ms** | Upper tail latency boundary under peak concurrency |
+| **Average Latency** | **23.45 ms** | **54.0 ms** | Mean response time across 22,819 requests |
+| **Unhandled Exceptions** | **0 (Zero Crashes)** | **0 (Zero Crashes)** | 100% system stability (Zero runtime exceptions) |
+| **Anti-DoS Protection** | **100% Interception** | **100% Interception** | `HTTP 429` rate-limit interception within 6 ms |
+
+> **Engineering Note on Execution Environments**:
+> * **Native Local Mode**: Achieves **652.1 RPS / 5.0ms median latency** by executing directly on host hardware (bypassing virtual network bridge hops).
+> * **Docker Desktop Mode (Windows WSL2)**: Achieves **534.1 RPS / 47.0ms median latency** due to Windows WSL2 Linux virtual machine network bridge translation overhead (~40ms). In Linux production cloud environments (AWS EC2 / EKS), Docker containers execute natively on the Linux kernel at full bare-metal speed.
 
 ---
 
@@ -110,10 +114,16 @@ Requires **Docker Desktop** installed:
 git clone https://github.com/arjunkrishna5/Distributed-High-Throughput-AI-API-Platform.git
 cd Distributed-High-Throughput-AI-API-Platform
 
-# Start entire platform in 1 command
+# Step 1: Start entire platform in 1 command (Terminal 1)
 docker compose up --build
+
+# Step 2: Run automated 3-stage Locust benchmark against Docker (Terminal 2)
+.\ai_engine\venv\Scripts\Activate.ps1
+locust -f benchmark/locustfile.py --autostart
 ```
 * **Swagger UI Documentation**: 👉 **`http://localhost:8080/swagger-ui/index.html`**
+* **Locust Benchmark Web UI**: 👉 **`http://localhost:8089`**
+
 
 ---
 
