@@ -1,6 +1,7 @@
-# Polyglot AI API Gateway & Microservice Platform
+# Distributed High-Throughput AI API Platform
 
 A production-grade, polyglot microservice platform engineered for low-latency, high-concurrency Deep Learning inference serving. Decouples high-volume public web traffic management from CPU/GPU-intensive PyTorch neural network computations using **Java 21 Virtual Threads**, **HTTP/2 gRPC Binary Protocol Buffers**, **Bucket4j Anti-DoS Rate Limiting**, **Containerized Docker Compose**, and **In-Memory Prediction Caching**.
+
 
 ---
 
