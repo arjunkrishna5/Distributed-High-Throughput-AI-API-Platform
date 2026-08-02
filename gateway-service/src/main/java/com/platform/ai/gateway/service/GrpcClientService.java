@@ -18,11 +18,13 @@ public class GrpcClientService {
     private final InferenceServiceGrpc.InferenceServiceBlockingStub blockingStub;
 
     public GrpcClientService() {
-        ManagedChannel channel = ManagedChannelBuilder.forAddress("localhost", 50051)
+        String grpcHost = System.getenv().getOrDefault("GRPC_HOST", "localhost");
+        ManagedChannel channel = ManagedChannelBuilder.forAddress(grpcHost, 50051)
                 .usePlaintext()
                 .build();
         this.blockingStub = InferenceServiceGrpc.newBlockingStub(channel);
     }
+
 
     public Map<String, Object> getPrediction(String text) {
         InferenceRequest request = InferenceRequest.newBuilder()

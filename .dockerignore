@@ -1,0 +1,14 @@
+# Prevents sending heavy local virtual environments and build directories to Docker daemon.
+# Speeds up Docker image build context transfer from 1GB down to milliseconds.
+
+ai_engine/venv/
+venv/
+**/target/
+.git/
+.vscode/
+.idea/
+__pycache__/
+*.pyc
+*.pyo
+.locust*
+locust.log

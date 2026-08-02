@@ -1,14 +1,14 @@
-# Distributed High-Throughput AI API Platform
+# Polyglot AI API Gateway & Microservice Platform
 
-A complete, production-grade backend microservice platform engineered for low-latency, high-concurrency Deep Learning inference serving. Decouples high-volume public web traffic management from CPU/GPU-intensive PyTorch neural network computations using **Java 21 Virtual Threads**, **HTTP/2 gRPC Binary Protocol Buffers**, **Bucket4j Anti-DoS Rate Limiting**, and **High-Speed In-Memory Prediction Caching**.
+A production-grade, polyglot microservice platform engineered for low-latency, high-concurrency Deep Learning inference serving. Decouples high-volume public web traffic management from CPU/GPU-intensive PyTorch neural network computations using **Java 21 Virtual Threads**, **HTTP/2 gRPC Binary Protocol Buffers**, **Bucket4j Anti-DoS Rate Limiting**, **Containerized Docker Compose**, and **In-Memory Prediction Caching**.
 
 ---
 
-## What is a Polyglot Architecture?
+## What is a Polyglot Microservice Architecture?
 
-In backend engineering, a **Polyglot Architecture** means combining multiple programming languages within a single microservice system to leverage the unique strengths of each language:
-* **Java**: Unmatched multithreaded web traffic orchestration, memory efficiency, and concurrency scaling.
-* **Python**: The industry-standard ecosystem for Machine Learning, PyTorch, and Deep Learning models.
+In backend engineering, a **Polyglot Microservice Architecture** combines multiple programming languages within a single system to leverage the unique strengths of each language:
+* **Java 21**: Unmatched multithreaded web traffic orchestration, memory efficiency, and non-blocking Virtual Thread concurrency scaling.
+* **Python 3.11**: The industry-standard ecosystem for Machine Learning, PyTorch, and Deep Learning models.
 
 By connecting Java and Python over high-speed binary IPC, we get the best of both worlds!
 
@@ -70,19 +70,19 @@ graph TD
 | :--- | :--- | :--- |
 | **Edge Gateway** | **Java 21 / Spring Boot 3.2** | High-concurrency request routing & OpenAPI documentation. |
 | **Thread Model** | **Project Loom Virtual Threads** | Lightweight ~500-byte threads for 1,000,000+ non-blocking concurrent connections. |
-| **AI Model Engine** | **Python 3.14 / PyTorch** | Deep learning inference execution engine. |
+| **AI Model Engine** | **Python 3.11 / PyTorch** | Deep learning inference execution engine. |
 | **Transformer Model** | **Hugging Face DistilBERT** | `distilbert-base-uncased-finetuned-sst-2-english` (66M Parameters). |
 | **IPC Protocol** | **gRPC & Protocol Buffers v3** | HTTP/2 persistent binary RPC streaming pipeline on port 50051. |
 | **Rate Limiter** | **Bucket4j** | Token Bucket anti-DoS protection shield. |
 | **Cache Layer** | **Native Concurrent HashMap / Redis** | Microsecond-speed in-memory prediction caching. |
+| **Containerization** | **Docker & Docker Compose** | 1-command microservice orchestration. |
 | **Benchmarking** | **Locust 2.46+** | Automated 3-Stage StepLoadShape load generator. |
-
 
 ---
 
 ## Empirical Performance Benchmarks
 
-Measured on a local development machine using an **Automated 3-Stage Locust Load Benchmark** (22,819 total requests over 90 seconds):
+Measured on a development machine using an **Automated 3-Stage Locust Load Benchmark** (22,819 total requests over 90 seconds):
 
 | Metric | Measurement | Technical SLA / Operational Target |
 | :--- | :--- | :--- |
@@ -94,98 +94,78 @@ Measured on a local development machine using an **Automated 3-Stage Locust Load
 | **Unhandled Exceptions** | **0 (Zero Crashes)** | 100% system stability (Zero runtime exceptions) |
 | **Anti-DoS Protection** | **100% Interception** | `HTTP 429` rate-limit interception within 6 ms |
 
-
 ---
 
 ## Quick-Start Execution Guide
 
-### Prerequisites
-* **Java 21 JDK** or newer
-* **Python 3.11+**
-* **Git**
+### Option 1: One-Command Docker Compose Startup (Recommended)
 
----
+Requires **Docker Desktop** installed:
 
-### Step 1: Clone Repository
 ```powershell
+# Clone repository
 git clone https://github.com/arjunkrishna5/Distributed-High-Throughput-AI-API-Platform.git
 cd Distributed-High-Throughput-AI-API-Platform
+
+# Start entire platform in 1 command
+docker compose up --build
 ```
+* **Swagger UI Documentation**: 👉 **`http://localhost:8080/swagger-ui/index.html`**
 
 ---
 
-### Step 2: Start Python AI Engine (Port 50051)
+### Option 2: Manual Local Development Startup
+
+#### Step 1: Start Python AI Engine (Port 50051)
 Open **Terminal 1**:
 ```powershell
-# Navigate to Python service directory
 cd ai_engine
-
-# Create and activate virtual environment
 python -m venv venv
 .\venv\Scripts\Activate.ps1
-
-# Install requirements and compile Protobuf files
 pip install -r requirements.txt
 python generate_protos.py
-
-# Start gRPC AI Server
 python server.py
 ```
-*Output:*
-```text
-[Python AI Engine] PyTorch AI Model Loaded Successfully!
-[Python AI Engine] gRPC Server running live on localhost:50051...
-```
 
----
-
-### Step 3: Start Java 21 Gateway Service (Port 8080)
+#### Step 2: Start Java 21 Gateway Service (Port 8080)
 Open **Terminal 2**:
 ```powershell
-# Navigate to Java gateway directory
 cd gateway-service
-
-# Run Spring Boot server using Maven Wrapper
 .\mvnw spring-boot:run
 ```
-*Output:*
-```text
-Tomcat started on port 8080 (http)
-Started GatewayApplication in 1.5 seconds
-```
 
----
-
-### Step 4: Test Live Predictions in Swagger UI
-Open your browser at: 👉 **`http://localhost:8080/swagger-ui.html`**
-
-1. Click **`POST /api/v1/predict`** ➔ **"Try it out"**.
-2. Pass JSON payload:
-   ```json
-   {
-     "text": "The distributed AI platform architecture is fast and reliable!"
-   }
-   ```
-3. Click **"Execute"**:
-   * **1st Click**: Returns `"cache_hit": false` (PyTorch inference computed in 20ms).
-   * **2nd Click**: Returns **`"cache_hit": true`** (Served from in-memory cache in **0.8ms**!).
-
----
-
-### Step 5: Run Automated 3-Stage Locust Load Benchmark
+#### Step 3: Run Automated 3-Stage Locust Load Benchmark
 Open **Terminal 3**:
 ```powershell
-# Activate environment and launch Locust
 .\ai_engine\venv\Scripts\Activate.ps1
 locust -f benchmark/locustfile.py --autostart
 ```
-Open Chrome at: 👉 **`http://localhost:8089`**
+Open Chrome at 👉 **`http://localhost:8089`**
 
-* Locust automatically executes 3 automated load stages:
-  * **Stage 1 (0–30s)**: 15 Users (100% Green / Un-throttled AI Inferences).
-  * **Stage 2 (30–60s)**: 60 Users (High Concurrency Virtual Thread Scaling).
-  * **Stage 3 (60–90s)**: 200 Users (Anti-DoS Rate Limiting Protection).
-* Stops automatically at 90 seconds, plotting live **RPS (650+)** and **p95 Latency (16ms)** graphs!
+---
+
+## Unit & Integration Testing
+
+Run automated tests for both Java and Python microservices:
+
+```powershell
+# Execute Python unit test suite
+python -m unittest ai_engine/test_server.py
+
+# Execute Java Spring Boot integration test suite
+cd gateway-service
+.\mvnw test
+```
+
+---
+
+## Known Limitations & Future Architecture Roadmap
+
+To maintain engineering transparency, the following design boundaries and future scope items are noted:
+
+1. **Single-Node Benchmark Scope**: Current benchmarks were conducted on a single local development host. Multi-node cloud deployments (AWS EC2 / EKS) will introduce inter-node VPC network latency hops (~1-3ms).
+2. **Security & Authentication Scope**: The edge gateway currently implements IP-based Bucket4j rate limiting. Production deployment scope includes adding **OAuth2 / JWT Token Authentication** at the gateway layer.
+3. **Observability Scope**: Planned future observability additions include **Prometheus** metrics export and **OpenTelemetry** distributed tracing across gRPC call spans.
 
 ---
 
@@ -196,10 +176,13 @@ Distributed-High-Throughput-AI-API-Platform/
 ├── proto/
 │   └── inference.proto         # Protobuf binary contract definition
 ├── ai_engine/                  # Python PyTorch AI Engine
+│   ├── Dockerfile              # Python service container definition
 │   ├── generate_protos.py      # Protobuf compiler script
 │   ├── server.py               # gRPC server & PyTorch DistilBERT model inference
+│   ├── test_server.py          # Python unit test suite
 │   └── requirements.txt        # Python dependencies (torch, transformers, grpcio)
 ├── gateway-service/            # Java 21 Spring Boot Edge Gateway
+│   ├── Dockerfile              # Multi-stage Java 21 container definition
 │   ├── src/main/java/com/platform/ai/gateway/
 │   │   ├── GatewayApplication.java     # Spring Boot entrypoint
 │   │   ├── controller/
@@ -208,8 +191,9 @@ Distributed-High-Throughput-AI-API-Platform/
 │   │       ├── GrpcClientService.java   # gRPC stub client connecting to Python
 │   │       ├── RateLimitingService.java # Bucket4j Token Bucket rate limiter
 │   │       └── RedisCacheService.java   # High-speed in-memory prediction cache
-│   └── src/main/resources/
-│       └── application.yml            # Spring Boot Virtual Threads config
+│   └── src/test/               # Java integration test suite
+├── docker-compose.yml          # Root multi-container orchestration
+├── .dockerignore               # Optimized Docker build context filter
 ├── benchmark/
 │   └── locustfile.py           # Automated 3-Stage StepLoadShape Locust benchmark
 └── README.md                   # System documentation & benchmark report
