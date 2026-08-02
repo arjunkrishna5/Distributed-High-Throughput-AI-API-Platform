@@ -107,29 +107,9 @@ Measured on a development machine using an **Automated 3-Stage Locust Load Bench
 
 ## Quick-Start Execution Guide
 
-### Option 1: One-Command Docker Compose Startup (Recommended)
+### Option 1: Native Local Development Startup (Recommended for Peak Performance)
 
-Requires **Docker Desktop** installed:
-
-```powershell
-# Clone repository
-git clone https://github.com/arjunkrishna5/Distributed-High-Throughput-AI-API-Platform.git
-cd Distributed-High-Throughput-AI-API-Platform
-
-# Step 1: Start entire platform in 1 command (Terminal 1)
-docker compose up --build
-
-# Step 2: Run automated 3-stage Locust benchmark against Docker (Terminal 2)
-.\ai_engine\venv\Scripts\Activate.ps1
-locust -f benchmark/locustfile.py --autostart
-```
-* **Swagger UI Documentation**: 👉 **`http://localhost:8080/swagger-ui/index.html`**
-* **Locust Benchmark Web UI**: 👉 **`http://localhost:8089`**
-
-
----
-
-### Option 2: Manual Local Development Startup
+Runs directly on host hardware for maximum **652.1 RPS / 5.0ms median latency** performance:
 
 #### Step 1: Start Python AI Engine (Port 50051)
 Open **Terminal 1**:
@@ -155,7 +135,30 @@ Open **Terminal 3**:
 .\ai_engine\venv\Scripts\Activate.ps1
 locust -f benchmark/locustfile.py --autostart
 ```
-Open Chrome at 👉 **`http://localhost:8089`**
+* **Swagger UI Documentation**: 👉 **`http://localhost:8080/swagger-ui/index.html`**
+* **Locust Benchmark Web UI**: 👉 **`http://localhost:8089`**
+
+---
+
+### Option 2: One-Command Docker Compose Startup
+
+Requires **Docker Desktop** installed:
+
+```powershell
+# Clone repository
+git clone https://github.com/arjunkrishna5/Distributed-High-Throughput-AI-API-Platform.git
+cd Distributed-High-Throughput-AI-API-Platform
+
+# Step 1: Start entire platform in 1 command (Terminal 1)
+docker compose up --build
+
+# Step 2: Run automated 3-stage Locust benchmark against Docker (Terminal 2)
+.\ai_engine\venv\Scripts\Activate.ps1
+locust -f benchmark/locustfile.py --autostart
+```
+* **Swagger UI Documentation**: 👉 **`http://localhost:8080/swagger-ui/index.html`**
+* **Locust Benchmark Web UI**: 👉 **`http://localhost:8089`**
+
 
 ---
 
