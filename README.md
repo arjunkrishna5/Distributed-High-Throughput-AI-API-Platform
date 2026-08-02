@@ -97,9 +97,11 @@ Measured on a development machine using an **Automated 3-Stage Locust Load Bench
 | **Unhandled Exceptions** | **0 (Zero Crashes)** | **0 (Zero Crashes)** | 100% system stability (Zero runtime exceptions) |
 | **Anti-DoS Protection** | **100% Interception** | **100% Interception** | `HTTP 429` rate-limit interception within 6 ms |
 
+> [!IMPORTANT]
 > **Engineering Note on Execution Environments**:
 > * **Native Local Mode**: Achieves **652.1 RPS / 5.0ms median latency** by executing directly on host hardware (bypassing virtual network bridge hops).
 > * **Docker Desktop Mode (Windows WSL2)**: Achieves **534.1 RPS / 47.0ms median latency** due to Windows WSL2 Linux virtual machine network bridge translation overhead (~40ms). In Linux production cloud environments (AWS EC2 / EKS), Docker containers execute natively on the Linux kernel at full bare-metal speed.
+
 
 ---
 
