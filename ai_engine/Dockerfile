@@ -21,6 +21,10 @@ COPY proto/ ./proto
 # Compile Protobuf definitions
 RUN python generate_protos.py
 
+# Pre-download Hugging Face DistilBERT Transformer model weights during build for 1-second boot time
+RUN python -c "from transformers import pipeline; pipeline('sentiment-analysis', model='distilbert-base-uncased-finetuned-sst-2-english')"
+
 EXPOSE 50051
+
 
 CMD ["python", "server.py"]
