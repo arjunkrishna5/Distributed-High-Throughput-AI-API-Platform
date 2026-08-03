@@ -9,7 +9,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Service
-public class RedisCacheService {
+public class InMemoryCacheService {
 
     private final Map<String, String> memoryCache = new ConcurrentHashMap<>();
 

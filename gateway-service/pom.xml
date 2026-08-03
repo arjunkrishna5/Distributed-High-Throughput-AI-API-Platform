@@ -67,12 +67,6 @@
             <version>8.7.0</version>
         </dependency>
 
-        <!-- Spring Data Redis for High-Speed AI Prediction Caching -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-redis</artifactId>
-        </dependency>
-
 
 
         <!-- Testing -->
