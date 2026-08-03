@@ -19,6 +19,9 @@ __pycache__/
 # IDE & Editor specific settings
 .vscode/
 .idea/
+bin/
+**/bin/
+
 *.suo
 *.user
 *.userosscache

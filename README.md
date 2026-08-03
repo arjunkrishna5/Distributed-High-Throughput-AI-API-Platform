@@ -210,7 +210,7 @@ Distributed-High-Throughput-AI-API-Platform/
 │   │   └── service/
 │   │       ├── GrpcClientService.java   # gRPC stub client connecting to Python
 │   │       ├── RateLimitingService.java # Bucket4j Token Bucket rate limiter
-│   │       └── RedisCacheService.java   # High-speed in-memory prediction cache
+│   │       └── InMemoryCacheService.java# High-speed in-memory prediction cache
 │   └── src/test/               # Java integration test suite
 ├── docker-compose.yml          # Root multi-container orchestration
 ├── .dockerignore               # Optimized Docker build context filter
